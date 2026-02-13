@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for You!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* กันไม่ให้มีแถบเลื่อนข้างๆ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffeef0; /* สีพื้นหลังชมพูอ่อน */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .message-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10; /* ให้ข้อความอยู่หน้าสุด */
+        }
+
+        /* ตั้งค่ารูปที่ตกลงมา */
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            width: 50px; /* ปรับขนาดรูปตามต้องการ */
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="message-box">
+        <h1>To My Dear... ❤️</h1>
+        <p>คุณคือของขวัญที่ดีที่สุดของผมเลยนะ</p>
+    </div>
+
+    <script>
+        function createFallingItem() {
+            const item = document.createElement('img');
+            // --- ใส่ URL รูปภาพของคุณตรงนี้ ---
+            item.src = 'https://cdn-icons-png.flaticon.com/512/833/833472.png'; // ตัวอย่างรูปหัวใจ
+            
+            item.classList.add('falling-item');
+            
+            // สุ่มตำแหน่งการตก
+            item.style.left = Math.random() * 100 + "vw";
+            // สุ่มเวลาที่ใช้ในการตก (3-7 วินาที)
+            item.style.animationDuration = Math.random() * 4 + 3 + "s";
+            // สุ่มขนาดรูป
+            const size = Math.random() * 30 + 20 + "px";
+            item.style.width = size;
+
+            document.body.appendChild(item);
+
+            // ลบรูปออกเมื่อตกถึงพื้นเพื่อไม่ให้หนักเครื่อง
+            setTimeout(() => {
+                item.remove();
+            }, 7000);
+        }
+
+        // สร้างรูปตกลงมาทุกๆ 300 มิลลิวินาที
+        setInterval(createFallingItem, 300);
+    </script>
+</body>
+</html>
