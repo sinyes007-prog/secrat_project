@@ -26,7 +26,6 @@
             z-index: 10;
             max-width: 600px;
             margin: 20px;
-            /* เพิ่มเอฟเฟกต์ให้กล่องข้อความค่อยๆ ปรากฏพร้อมกับระเบิด */
             animation: fadeIn 2.5s ease-in-out;
         }
         @keyframes fadeIn {
@@ -46,13 +45,12 @@
             margin: 0;
         }
 
-        /* --- คลาสสำหรับรูปภาพที่ถูกตัดเป็นรูปหัวใจ (ใช้เฉพาะตอนฝนตก) --- */
+        /* คลาสสำหรับรูปภาพของคุณ */
         .photo-heart-item {
             position: absolute;
             z-index: 1;
             pointer-events: none;
             object-fit: cover;
-            /* หน้ากากรูปหัวใจ */
             -webkit-mask-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23000' d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E");
             -webkit-mask-size: contain;
             -webkit-mask-repeat: no-repeat;
@@ -63,12 +61,18 @@
             mask-position: center;
         }
 
-        /* --- คลาสสำหรับพลุหัวใจสีชมพู --- */
+        /* คลาสสำหรับหัวใจสีชมพูล้วน */
+        .pink-heart-item {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* คลาสสำหรับพลุตอนเริ่มต้น (ให้อยู่เหนือกล่องข้อความ) */
         .pink-explosion-heart {
             position: absolute;
-            z-index: 12; /* ให้อยู่เหนือกล่องข้อความตอนระเบิด */
+            z-index: 12; 
             pointer-events: none;
-            /* หัวใจสีชมพู ไม่ต้องใช้หน้ากากตัดรูป */
         }
 
         /* คลาสแอนิเมชันฝนตก */
@@ -88,7 +92,6 @@
         <p>สุขสันต์วันวาเลนไทน์ ปีนี้รักที่สุดรักเหมือนเดิม และจะรักไปเรื่อย ๆ ขอบคุณที่อยู่ข้างกันมาโดยตลอดรักมาก ๆ นะ</p>
     </div>
     <script>
-        // 📌 รายชื่อไฟล์รูปภาพของคุณ (ใช้เฉพาะตอนฝนตก)
         const customImages = [
             'ph1.png', 
             'ph2.png',
@@ -96,46 +99,43 @@
             'ph4.png'
         ];
 
-        // --- ส่วนที่ 1: ฟังก์ชันสร้างระเบิดหัวใจสีชมพู (SVG ล้วนๆ) ---
+        // โค้ดสร้างรูปทรงหัวใจ SVG สีชมพู
+        const heartSVGString = `
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <path fill="#ff4d6d" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+            </svg>
+        `;
+
         function triggerPinkHeartExplosion() {
-            const explosionCount = 50; // เพิ่มจำนวนให้ดูอลังการขึ้น
+            const explosionCount = 40; 
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
 
-            // โค้ดสร้างรูปทรงหัวใจ SVG สีชมพู
-            const heartSVGString = `
-                <svg viewBox="0 0 512 512" width="100%" height="100%">
-                    <path fill="#ff4d6d" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
-                </svg>
-            `;
-
             for (let i = 0; i < explosionCount; i++) {
-                // สร้าง div เปล่าๆ ขึ้นมาเพื่อบรรจุ SVG
                 const particle = document.createElement('div');
                 particle.classList.add('pink-explosion-heart');
-                particle.innerHTML = heartSVGString; // ใส่โค้ด SVG ลงไป
+                particle.innerHTML = heartSVGString; 
 
                 let posX = centerX;
                 let posY = centerY;
                 particle.style.left = posX + 'px';
                 particle.style.top = posY + 'px';
                 
-                // สุ่มขนาด (ให้มีขนาดหลากหลาย)
-                const size = Math.random() * 50 + 20;
+                const size = Math.random() * 40 + 20;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.transform = 'translate(-50%, -50%)';
 
                 document.body.appendChild(particle);
 
-                // ฟิสิกส์การระเบิด (เหมือนเดิม)
+                // --- ปรับลดความเร็วพลุตรงนี้ ---
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 18 + 6; // เพิ่มความแรงนิดหน่อย
+                const velocity = Math.random() * 10 + 3; // ลดความแรงลง
                 let vx = Math.cos(angle) * velocity;
                 let vy = Math.sin(angle) * velocity;
-                let gravity = 0.6;
+                let gravity = 0.3; // ลดแรงโน้มถ่วงให้ตกลงมาช้าลง นุ่มขึ้น
                 let rotation = Math.random() * 360;
-                let rotationSpeed = (Math.random() - 0.5) * 20;
+                let rotationSpeed = (Math.random() - 0.5) * 10; // หมุนช้าลง
 
                 function animateParticle() {
                     vy += gravity;
@@ -145,7 +145,6 @@
 
                     particle.style.left = posX + 'px';
                     particle.style.top = posY + 'px';
-                    // หมุนตัว div ที่บรรจุ SVG
                     particle.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
 
                     if (posY < window.innerHeight + 200) {
@@ -158,38 +157,46 @@
             }
         }
 
-        // --- ส่วนที่ 2: ฟังก์ชันสร้างฝนรูปแฟนตกลงมา (ใช้รูปจาก customImages) ---
-        function createFallingPhotoRain() {
-            const img = document.createElement('img');
-            img.src = customImages[Math.floor(Math.random() * customImages.length)];
+        // ฟังก์ชันสร้างของตกลงมา (สุ่มระหว่างรูป กับ หัวใจสีชมพู)
+        function createMixedFallingRain() {
+            // สุ่มโอกาส 50% ที่จะเป็นรูปของคุณ และ 50% ที่จะเป็นหัวใจสีชมพู
+            const isPhoto = Math.random() > 0.5; 
             
-            // ใช้คลาส photo-heart-item เพื่อตัดรูปเป็นหัวใจ และ falling-rain เพื่อให้ตกลงมา
-            img.classList.add('photo-heart-item', 'falling-rain');
+            let element;
 
-            img.style.left = Math.random() * 100 + 'vw';
+            if (isPhoto) {
+                // ถ้าสุ่มได้รูปของคุณ
+                element = document.createElement('img');
+                element.src = customImages[Math.floor(Math.random() * customImages.length)];
+                element.classList.add('photo-heart-item', 'falling-rain');
+            } else {
+                // ถ้าสุ่มได้หัวใจสีชมพู
+                element = document.createElement('div');
+                element.innerHTML = heartSVGString;
+                element.classList.add('pink-heart-item', 'falling-rain');
+            }
+
+            element.style.left = Math.random() * 100 + 'vw';
             
-            const size = Math.random() * 50 + 40; 
-            img.style.width = size + 'px';
-            img.style.height = size + 'px';
+            const size = Math.random() * 45 + 35; 
+            element.style.width = size + 'px';
+            element.style.height = size + 'px';
 
-            const fallDuration = Math.random() * 5 + 5; // ปรับให้ตกช้าลงนิดนึง ดูนุ่มนวลขึ้น
-            img.style.animationDuration = fallDuration + 's';
+            const fallDuration = Math.random() * 6 + 6; // ให้ตกลงมาช้าๆ นุ่มๆ
+            element.style.animationDuration = fallDuration + 's';
 
-            document.body.appendChild(img);
+            document.body.appendChild(element);
 
             setTimeout(() => {
-                img.remove();
+                element.remove();
             }, fallDuration * 1000);
         }
 
-        // === เริ่มทำงาน ===
-        // 1. สั่งให้ระเบิดหัวใจสีชมพูทันที
         triggerPinkHeartExplosion();
 
-        // 2. หลังจากผ่านไป 2 วินาที ให้เริ่มปล่อยฝนรูปแฟน
         setTimeout(() => {
-            setInterval(createFallingPhotoRain, 800); // ปล่อยมาเรื่อยๆ ทุก 0.8 วินาที
-        }, 2000);
+            setInterval(createMixedFallingRain, 700); 
+        }, 1500);
 
     </script>
 </body>
